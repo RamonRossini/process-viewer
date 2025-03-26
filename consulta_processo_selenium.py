@@ -1,20 +1,25 @@
+from detectar_versao_selenium import iniciar_driver
 from decouple import config
-from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support.ui import Select
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.chrome.options import Options
 
 # Informações do .env
 meu_cpf = config('MEU_CPF')
 empresa_cnpj = config('EMPRESA_CNPJ')
+chromedriver_dir = config('CHROMEDRIVER_DIR')
+
+# Configuração inicial
+options = Options()
+options.add_argument('--headless') # Executar sem interface gráfica
+options.add_argument('--no-sandbox') # Recomendado para servidores Linux
 
 def realizar_consulta():
 
-    # Configuração inicial
-    service = Service('./chromedriver.exe')
-    driver = webdriver.Chrome(service=service)
+    # Iniciar o driver
+    driver = iniciar_driver(chromedriver_dir, options)
 
     # Acessar o site
     driver.get('https://esaj.tjsp.jus.br/cpopg/open.do')
